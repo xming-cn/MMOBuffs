@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class StatusEffect implements Keyed, Resolver {
     private final NamespacedKey key;
@@ -31,7 +30,7 @@ public class StatusEffect implements Keyed, Resolver {
     private final Map<EffectOption, Boolean> options = new HashMap<>();
 
     private final int maxStacks;
-    private final StackType stackType;
+    @NotNull private final StackType stackType;
 
     private final EffectDisplay display;
 
@@ -39,6 +38,13 @@ public class StatusEffect implements Keyed, Resolver {
     public StatusEffect(@NotNull ConfigurationSection section) {
         this.key = NamespacedKey.fromString(section.getName().toLowerCase(Locale.ROOT), MMOBuffs.getInst());
         this.name = MiniMessage.miniMessage().deserialize(section.getString("display-name", WordUtils.capitalize(key.getKey())));
+
+        this.maxStacks = section.getInt("max-stacks", 1);
+        this.stackType = StackType.valueOf(section.getString("stack-type", "NORMAL").toUpperCase(Locale.ROOT));
+
+        this.display = (section.isConfigurationSection("display"))
+                ? new EffectDisplay(section.getConfigurationSection("display"))
+                : null;
 
         if (section.isConfigurationSection("stats")) {
             ConfigurationSection statSection = section.getConfigurationSection("stats");
@@ -63,13 +69,6 @@ public class StatusEffect implements Keyed, Resolver {
                 options.put(EffectOption.fromPath(key), optionSection.getBoolean(key));
             }
         }
-
-        this.maxStacks = section.getInt("max-stacks", 1);
-        this.stackType = StackType.valueOf(section.getString("stack-type", "NORMAL").toUpperCase(Locale.ROOT));
-
-        this.display = (section.isConfigurationSection("display"))
-            ? new EffectDisplay(section.getConfigurationSection("display"))
-            : null;
     }
 
     @Override
@@ -81,9 +80,9 @@ public class StatusEffect implements Keyed, Resolver {
         return name;
     }
 
-    public boolean hasStats() {
-        return !stats.isEmpty();
-    }
+//    public boolean hasStats() {
+//        return !stats.isEmpty();
+//    }
 
     public Map<StatKey, StatValue> getStats() {
         return stats;
@@ -97,7 +96,7 @@ public class StatusEffect implements Keyed, Resolver {
         return maxStacks;
     }
 
-    public StackType getStackType() {
+    public @NotNull StackType getStackType() {
         return stackType;
     }
 
@@ -112,7 +111,7 @@ public class StatusEffect implements Keyed, Resolver {
     @Override
     public TagResolver getResolver() {
         TagResolver.Builder resolver = TagResolver.builder()
-            .resolver(Placeholder.parsed("max-stacks", getMaxStacks() + ""))
+            .resolver(Placeholder.parsed("max-stacks", String.valueOf(getMaxStacks())))
             .resolver(Placeholder.component("name", name))
             .resolver(Placeholder.parsed("stack-type", WordUtils.capitalize(stackType.name().toLowerCase(Locale.ROOT))));
 
@@ -126,24 +125,25 @@ public class StatusEffect implements Keyed, Resolver {
 
         StatusEffect effect = (StatusEffect) o;
 
-        if (maxStacks != effect.maxStacks) return false;
-        if (!key.equals(effect.key)) return false;
-        if (!name.equals(effect.name)) return false;
-        if (!stats.equals(effect.stats)) return false;
-        if (!options.equals(effect.options)) return false;
-        if (stackType != effect.stackType) return false;
-        return Objects.equals(display, effect.display);
+//        if (maxStacks != effect.maxStacks) return false;
+//        if (!key.equals(effect.key)) return false;
+//        if (!name.equals(effect.name)) return false;
+//        if (!stats.equals(effect.stats)) return false;
+//        if (!options.equals(effect.options)) return false;
+//        if (stackType != effect.stackType) return false;
+//        return Objects.equals(display, effect.display);
+        return key.equals(effect.key);
     }
 
     @Override
     public int hashCode() {
-        int result = key.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + stats.hashCode();
-        result = 31 * result + options.hashCode();
-        result = 31 * result + maxStacks;
-        result = 31 * result + stackType.hashCode();
-        result = 31 * result + (display != null ? display.hashCode() : 0);
-        return result;
+//        int result = key.hashCode();
+//        result = 31 * result + name.hashCode();
+//        result = 31 * result + stats.hashCode();
+//        result = 31 * result + options.hashCode();
+//        result = 31 * result + maxStacks;
+//        result = 31 * result + stackType.hashCode();
+//        result = 31 * result + (display != null ? display.hashCode() : 0);
+        return key.hashCode();
     }
 }

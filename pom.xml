@@ -30,16 +30,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.4.1</version>
                 <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>com.ehhthan.mmobuffs.acf</shadedPattern>
+                            <shadedPattern>com.ehhthan.mmobuffs.acf</shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
-                            <shadedPattern>com.ehhthan.mmobuffs.locales</shadedPattern>
+                            <shadedPattern>com.ehhthan.mmobuffs.locales</shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -53,9 +54,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -63,9 +61,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
-                <configuration>
-                    <outputDirectory>C:\Users\Ethan\Desktop\TestServer\plugins</outputDirectory>
-                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -111,10 +106,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.lumine</groupId>
-            <artifactId>MythicLib-dist</artifactId>
-            <version>1.3-R21-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>mythic</groupId>
+            <artifactId>MythicLib</artifactId>
+            <version>1.6-20230704.211308</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/MythicLib-dist-1.6.2-20230704.211308-1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
@@ -124,7 +120,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.1</version>
+            <version>2.11.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

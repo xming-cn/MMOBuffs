@@ -32,10 +32,11 @@ public class MythicLibStatHandler implements StatHandler<MMOPlayerData> {
     public void add(@NotNull EffectHolder holder, @NotNull ActiveStatusEffect effect, @NotNull StatKey key, @NotNull StatValue value) {
         MMOPlayerData adapted = adapt(holder);
         if (adapted != null) {
-            double modifierValue = switch (effect.getStatusEffect().getStackType()) {
-                case NORMAL, CASCADING -> value.getValue() * effect.getStacks();
-                default -> value.getValue();
-            };
+//            double modifierValue = switch (effect.getStatusEffect().getStackType()) {
+//                case NORMAL, CASCADING -> value.getValue() * effect.getStacks();
+//                default -> value.getValue();
+//            };
+            double modifierValue = value.getValue_base() + value.getValue_scale() * (effect.getStacks()-1);
 
             String stat = key.getStat().toUpperCase(Locale.ROOT);
             adapted.getStatMap().getInstance(stat).addModifier(new StatModifier(key.toString(), stat, modifierValue, adaptModifier(value.getType())));

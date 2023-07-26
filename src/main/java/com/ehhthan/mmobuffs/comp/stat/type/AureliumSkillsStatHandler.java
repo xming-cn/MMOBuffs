@@ -1,6 +1,5 @@
 package com.ehhthan.mmobuffs.comp.stat.type;
 
-import com.archyx.aureliumskills.AureliumSkills;
 import com.archyx.aureliumskills.api.AureliumAPI;
 import com.archyx.aureliumskills.data.PlayerData;
 import com.archyx.aureliumskills.modifier.StatModifier;
@@ -32,10 +31,11 @@ public class AureliumSkillsStatHandler implements StatHandler<PlayerData> {
     public void add(@NotNull EffectHolder holder, @NotNull ActiveStatusEffect effect, @NotNull StatKey key, @NotNull StatValue value) {
         PlayerData adapted = adapt(holder);
         if (adapted != null) {
-            double modifierValue = switch (effect.getStatusEffect().getStackType()) {
-                case NORMAL, CASCADING -> value.getValue() * effect.getStacks();
-                default -> value.getValue();
-            };
+//            double modifierValue = switch (effect.getStatusEffect().getStackType()) {
+//                case NORMAL, CASCADING -> value.getValue() * effect.getStacks();
+//                default -> value.getValue();
+//            };
+            double modifierValue = value.getValue_base() + value.getValue_scale() * (effect.getStacks()-1);
 
             Stat stat = AureliumAPI.getPlugin().getStatRegistry().getStat(key.getStat());
             if (stat != null)
